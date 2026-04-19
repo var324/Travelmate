@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Itinerary</title>
+</head>
+<body>
+
+<h2>✈️ Your Smart Itinerary</h2>
+
+<h3>Flights</h3>
+<ul>
+    {% for f in flights %}
+        <li>{{ f }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Hotels</h3>
+<ul>
+    {% for h in hotels %}
+        <li>{{ h }}</li>
+    {% endfor %}
+</ul>
+
+<br>
+<a href="/dashboard">Back to Dashboard</a>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+</head>
+
+<body>
+
+<h2>Admin Control Panel</h2>
+
+<p>Welcome, {{ user }} (Manager)</p>
+
+<hr>
+
+<h3>📋 Approval Queue</h3>
+
+{% for trip in pending %}
+    <div>
+        <b>{{ trip.employee_id }}</b><br>
+        {{ trip.origin }} → {{ trip.destination }}<br>
+        Status: {{ trip.status }}
+
+        <br>
+        <a href="/approve/{{ trip.id }}">Approve</a> |
+        <a href="/reject/{{ trip.id }}">Reject</a>
+    </div>
+    <hr>
+{% endfor %}
+
+<h3>📊 All Trips (Employee Tracking)</h3>
+
+{% for trip in trips %}
+    <div>
+        <b>{{ trip.employee_id }}</b><br>
+        {{ trip.origin }} → {{ trip.destination }}<br>
+        Status: {{ trip.status }}
+    </div>
+    <hr>
+{% endfor %}
+
+<a href="/logout">Logout</a>
+
+</body>
+</html>

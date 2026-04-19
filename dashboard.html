@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+        }
+
+        .navbar {
+            background: #1f3c88;
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 5px 5px 5px 0;
+            background: #1f3c88;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: white;
+            font-size: 12px;
+        }
+
+        .pending { background: orange; }
+        .approved { background: green; }
+        .rejected { background: red; }
+
+        .timeline {
+            border-left: 3px solid #1f3c88;
+            padding-left: 12px;
+            margin-top: 10px;
+        }
+
+        .checkpoint {
+            margin: 8px 0;
+        }
+
+        .small {
+            font-size: 12px;
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    ✈️ Corporate Travel Copilot Dashboard
+</div>
+
+<div class="container">
+
+    <!-- WELCOME CARD -->
+    <div class="card">
+        <h2>Welcome, {{ user }} 👋</h2>
+        <p>Manage your corporate travel requests efficiently.</p>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+<div class="card">
+    <h3>Quick Actions</h3>
+    <a class="btn" href="/trip">➕ Create Trip</a>
+    <a class="btn" href="/copilot">🤖 AI Copilot</a>
+    <a class="btn" href="/approvals">📋 Approvals</a>
+
+    <!-- 🔔 ADD HERE -->
+    <a class="btn" href="/notifications">🔔 Notifications</a>
+
+    <a class="btn" href="/policy">📄 View Policy</a>
+
+    <a class="btn" href="/logout">🚪 Logout</a>
+</div>
+
+    <<!-- UPCOMING TRIPS -->
+<div class="card">
+    <h3>📌 Upcoming Trips</h3>
+
+    {% if trips %}
+        {% for trip in trips %}
+            <div style="margin-bottom: 25px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
+
+                <b>{{ trip.origin }}</b> → <b>{{ trip.destination }}</b><br>
+                {{ trip.start_date }} to {{ trip.end_date }}<br>
+                Purpose: {{ trip.purpose }}<br>
+
+                <br>
+
+                <!-- STATUS -->
+                Status:
+                <b class="status {{ trip.status }}">{{ trip.status }}</b>
+
+                <br><br>
+
+                <!-- ACTION BUTTONS -->
+                <b>Actions:</b><br>
+                <a class="btn" href="/checkpoint/{{ trip.id }}/flight_departure">✈️ Departure</a>
+                <a class="btn" href="/checkpoint/{{ trip.id }}/arrival">📍 Arrival</a>
+                <a class="btn" href="/checkpoint/{{ trip.id }}/hotel_checkin">🏨 Hotel Check-in</a>
+
+                <br><br>
+
+                <!-- TIMELINE -->
+                <b>Trip Timeline:</b>
+
+                {% if trip.checkpoints %}
+                    <div style="margin-top: 10px;">
+                        {% for cp in trip.checkpoints %}
+                            <div style="margin: 5px 0;">
+                                {% if cp.type == "flight_departure" %}
+                                    ✈️
+                                {% elif cp.type == "arrival" %}
+                                    🛬
+                                {% elif cp.type == "hotel_checkin" %}
+                                    🏨
+                                {% endif %}
+
+                                <b>{{ cp.type.replace('_', ' ') }}</b>
+                                <span style="color: gray; font-size: 12px;">
+                                    — {{ cp.timestamp }}
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p style="color: gray;">No checkpoints yet.</p>
+                {% endif %}
+
+            </div>
+        {% endfor %}
+
+    {% else %}
+        <p>No trips found.</p>
+    {% endif %}
+</div>
+
+<!-- ALERTS (RISK PLACEHOLDER) -->
+<div class="card">
+    <h3>🚨 Alerts</h3>
+    <p style="color: gray;">No active alerts</p>
+</div>
+
+<!-- STATUS OVERVIEW -->
+<div class="card">
+    <h3>📊 Status Overview</h3>
+
+    <p>🟠 Pending:
+        {{ trips|selectattr("status","equalto","pending")|list|length }}
+    </p>
+
+    <p>🟢 Approved:
+        {{ trips|selectattr("status","equalto","approved")|list|length }}
+    </p>
+
+    <p>🔴 Rejected:
+        {{ trips|selectattr("status","equalto","rejected")|list|length }}
+    </p>
+</div>
+
+    <div class="card">
+    <h3>🚨 Risk Alerts</h3>
+
+    {% for trip in trips %}
+        {% for risk in trip.risks %}
+            <div style="background:#fff3f3; padding:10px; margin:8px 0; border-left:4px solid red;">
+                
+                <b>{{ risk.event_type.replace('_',' ') }}</b><br>
+                {{ risk.message }}<br>
+
+                <small><b>Suggestion:</b> {{ risk.suggestion }}</small>
+
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>
+
+    <!-- SYSTEM STATUS -->
+    <div class="card">
+        <h3>System Status</h3>
+        <p>✔ Authentication System Active</p>
+        <p>✔ Trip Module Active</p>
+        <p>✔ Approval Workflow Active</p>
+        <p>✔ Trip Tracking Active</p>
+    </div>
+
+</div>
+
+</body>
+</html>
