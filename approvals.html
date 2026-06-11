@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trip Approvals</title>
+</head>
+<body>
+
+<h2>Manager Approval Panel</h2>
+
+{% for trip in trips %}
+    <div style="margin-bottom:20px; border:1px solid #ccc; padding:10px;">
+        <b>{{ trip.employee_id }}</b><br>
+        {{ trip.origin }} → {{ trip.destination }}<br>
+        {{ trip.start_date }} to {{ trip.end_date }}<br>
+        Purpose: {{ trip.purpose }}<br>
+        Status: <b>{{ trip.status }}</b><br><br>
+
+        <a href="/approve/{{ trip.id }}">✅ Approve</a>
+        |
+        <a href="/reject/{{ trip.id }}">❌ Reject</a>
+    </div>
+{% endfor %}
+
+<br>
+<a href="/dashboard">Back</a>
+
+</body>
+</html>
