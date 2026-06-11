@@ -1,11 +1,17 @@
+
 from flask import Flask, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
-app = Flask(__name__)
-app.secret_key = "travel_secret_key"
+import os
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///travelmate.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+app.secret_key = os.environ.get("SECRET_KEY", "travel_secret_key")
+
 db = SQLAlchemy(app)
 
 class User(db.Model):
