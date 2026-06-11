@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notifications</title>
+</head>
+<body>
+
+<h2>🔔 Notifications</h2>
+
+{% if notifs %}
+    {% for n in notifs %}
+        <div style="padding:10px; border-bottom:1px solid #ddd;">
+            <b>{{ n.type }}</b><br>
+            {{ n.message }}
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No notifications</p>
+{% endif %}
+
+</body>
+</html>
