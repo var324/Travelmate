@@ -146,6 +146,9 @@ def dashboard():
 
     user_id = session["user"]
     user = User.query.filter_by(employee_id=user_id).first()
+    
+    if not user:
+        return redirect("/login")
 
     trips = Trip.query.filter_by(employee_id=user_id).all()
 
@@ -312,7 +315,14 @@ def simulate_risk(trip_id):
 
 @app.route("/approve/<int:trip_id>")
 def approve(trip_id):
+    if "user" not in session:
+        return redirect("/login")
+
     trip = Trip.query.get(trip_id)
+
+    if not trip:
+        return "Trip not found", 404
+
     trip.status = "approved"
 
     create_notification(
@@ -326,7 +336,14 @@ def approve(trip_id):
 
 @app.route("/reject/<int:trip_id>")
 def reject(trip_id):
+    if "user" not in session:
+        return redirect("/login")
+
     trip = Trip.query.get(trip_id)
+
+    if not trip:
+        return "Trip not found", 404
+
     trip.status = "rejected"
 
     create_notification(
@@ -343,9 +360,12 @@ def notifications():
     if "user" not in session:
         return redirect("/login")
 
-    notifs = Notification.query.filter_by(
-        employee_id=session["user"]
-    ).all()
+    user_id = session.get("user")
+
+    if not user_id:
+        return redirect("/login")
+
+    notifs = Notification.query.filter_by(employee_id=user_id).all()
 
     return render_template("notifications.html", notifs=notifs)
 
