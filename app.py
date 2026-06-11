@@ -277,6 +277,11 @@ def risk_event(trip_id, event_type):
 
     trip = Trip.query.get(trip_id)
 
+    # ✅ SAFE CHECK (CRITICAL)
+    if not trip:
+        return "Trip not found", 404
+
+    # ✅ SAFE RESPONSE GENERATION
     message, suggestion = generate_risk_response(event_type, trip.destination)
 
     risk = RiskEvent(
@@ -289,12 +294,13 @@ def risk_event(trip_id, event_type):
 
     db.session.add(risk)
 
-    # 🔔 ADD THIS LINE (NOTIFICATION)
-    create_notification(
-        trip.employee_id,
-        f"Risk Alert: {message}",
-        "risk"
-    )
+    # 🔔 NOTIFICATION SAFETY CHECK
+    if trip.employee_id:
+        create_notification(
+            trip.employee_id,
+            f"Risk Alert: {message}",
+            "risk"
+        )
 
     db.session.commit()
 
