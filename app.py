@@ -32,16 +32,18 @@ class User(db.Model):
 
 class Trip(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    employee_id = db.Column(db.String(100))
+
+    employee_id = db.Column(db.String(50))
+
     origin = db.Column(db.String(100))
     destination = db.Column(db.String(100))
-    start_date = db.Column(db.String(100))
-    end_date = db.Column(db.String(100))
-    purpose = db.Column(db.String(200))
-    status = db.Column(db.String(50), default="pending")
-    risks = db.relationship('RiskEvent', backref='trip', lazy=True)
 
-    checkpoints = db.relationship('Checkpoint', backref='trip', lazy=True)
+    start_date = db.Column(db.String(50))
+    end_date = db.Column(db.String(50))
+
+    purpose = db.Column(db.String(200))
+
+    status = db.Column(db.String(20), default="pending")
 
 class Checkpoint(db.Model):
     id = db.Column(db.Integer, primary_key=True)
