@@ -247,33 +247,36 @@ def copilot():
 
 @app.route("/trip", methods=["GET", "POST"])
 def trip():
+
     if "user" not in session:
         return redirect("/login")
 
-    if request.method == "POST":
-        destination = request.form["destination"]
+    user_id = session["user"]
 
-        flights, hotels = generate_itinerary(destination)
+    if request.method == "POST":
+
+        origin = request.form["origin"]
+        destination = request.form["destination"]
+        start_date = request.form["start_date"]
+        end_date = request.form["end_date"]
+        purpose = request.form["purpose"]
 
         new_trip = Trip(
-            employee_id=session["user"],
-            origin=request.form["origin"],
+            employee_id=user_id,
+            origin=origin,
             destination=destination,
-            start_date=request.form["start_date"],
-            end_date=request.form["end_date"],
-            purpose=request.form["purpose"],
+            start_date=start_date,
+            end_date=end_date,
+            purpose=purpose,
             status="pending"
         )
 
         db.session.add(new_trip)
         db.session.commit()
 
-        session["flights"] = flights
-        session["hotels"] = hotels
+        return redirect("/dashboard")
 
-        return redirect("/itinerary")
-
-    return render_template("trip.html")
+    return render_template("create_trip.html")
 
 @app.route("/itinerary")
 def itinerary():
