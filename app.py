@@ -16,9 +16,19 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    employee_id = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(200))
-    role = db.Column(db.String(20), default="employee")
+
+    employee_id = db.Column(db.String(50), unique=True)
+
+    name = db.Column(db.String(100))
+
+    email = db.Column(db.String(100), unique=True)
+
+    password = db.Column(db.String(200), nullable=True)
+
+    role = db.Column(db.String(20))
+
+    activated = db.Column(db.Boolean, default=False)
+    
 
 class Trip(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -109,19 +119,34 @@ def create_notification(employee_id, message, type):
 def home():
     return redirect("/login")
 
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    if request.method == "POST":
-        emp_id = request.form["employee_id"]
-        password = generate_password_hash(request.form["password"])
+@app.route("/activate", methods=["GET", "POST"])
+def activate():
 
-        user = User(employee_id=emp_id, password=password)
-        db.session.add(user)
+    if request.method == "POST":
+
+        emp_id = request.form["employee_id"]
+        password = request.form["password"]
+        confirm = request.form["confirm_password"]
+
+        if password != confirm:
+            return "Passwords do not match"
+
+        user = User.query.filter_by(employee_id=emp_id).first()
+
+        if not user:
+            return "Employee ID not found"
+
+        if user.activated:
+            return "Account already activated"
+
+        user.password = generate_password_hash(password)
+        user.activated = True
+
         db.session.commit()
 
         return redirect("/login")
 
-    return render_template("register.html")
+    return render_template("activate.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -138,6 +163,34 @@ def login():
         return "Invalid credentials"
 
     return render_template("login.html")
+
+@app.route("/activate", methods=["GET", "POST"])
+def activate():
+
+    if request.method == "POST":
+
+        emp_id = request.form["employee_id"]
+        password = request.form["password"]
+        confirm = request.form["confirm_password"]
+
+        if password != confirm:
+            return "Passwords do not match"
+
+        user = User.query.filter_by(employee_id=emp_id).first()
+
+        if not user:
+            return "Employee ID not found"
+
+        if user.password:
+            return "Account already activated"
+
+        user.password = generate_password_hash(password)
+
+        db.session.commit()
+
+        return redirect("/login")
+
+    return render_template("activate.html")
 
 @app.route("/dashboard")
 def dashboard():
@@ -378,6 +431,36 @@ def logout():
 
 with app.app_context():
     db.create_all()
+
+    employees = [
+        ("EMP1001","John Smith","john.smith@company.com","employee"),
+        ("EMP1002","Sarah Johnson","sarah.johnson@company.com","employee"),
+        ("EMP1003","Michael Brown","michael.brown@company.com","employee"),
+        ("EMP1004","Emily Davis","emily.davis@company.com","employee"),
+        ("EMP1005","David Wilson","david.wilson@company.com","employee"),
+        ("EMP1006","Jessica Moore","jessica.moore@company.com","employee"),
+        ("EMP1007","Daniel Taylor","daniel.taylor@company.com","employee"),
+        ("EMP1008","Olivia Martinez","olivia.martinez@company.com","employee"),
+        ("EMP1009","James Anderson","james.anderson@company.com","employee"),
+        ("EMP1010","Sophia Thomas","sophia.thomas@company.com","manager")
+    ]
+
+    for emp_id, name, email, role in employees:
+        existing = User.query.filter_by(employee_id=emp_id).first()
+
+        if not existing:
+            db.session.add(
+                User(
+                    employee_id=emp_id,
+                    name=name,
+                    email=email,
+                    password=None,
+                    role=role,
+                    activated=False
+                )
+            )
+
+    db.session.commit()
 
 if __name__ == "__main__":
     app.run(debug=True)
