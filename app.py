@@ -153,12 +153,22 @@ def activate():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
+
         emp_id = request.form["employee_id"]
         password = request.form["password"]
 
         user = User.query.filter_by(employee_id=emp_id).first()
 
-        if user and check_password_hash(user.password, password):
+        if not user:
+            return "Employee ID not found"
+
+        if not user.activated:
+            return redirect("/activate")
+
+        if not user.password:
+            return "Please activate your account first"
+
+        if check_password_hash(user.password, password):
             session["user"] = emp_id
             return redirect("/dashboard")
 
