@@ -171,29 +171,50 @@ def dashboard():
 
     user_id = session["user"]
     user = User.query.filter_by(employee_id=user_id).first()
-    
+
     if not user:
         return redirect("/login")
 
-    trips = Trip.query.filter_by(employee_id=user_id).all()
+    # -------------------------
+    # EMPLOYEE VIEW
+    # -------------------------
+    if user.role != "manager":
 
-    # Admin view (manager)
-    if user.role == "manager":
-        all_trips = Trip.query.all()
-        pending_trips = Trip.query.filter_by(status="pending").all()
+        trips = Trip.query.filter_by(employee_id=user_id).all()
+
+        total = len(trips)
+        pending = len([t for t in trips if t.status == "pending"])
+        approved = len([t for t in trips if t.status == "approved"])
+        rejected = len([t for t in trips if t.status == "rejected"])
 
         return render_template(
-            "dashboard_admin.html",
+            "dashboard.html",
             user=user_id,
-            trips=all_trips,
-            pending=pending_trips
+            trips=trips,
+            total=total,
+            pending=pending,
+            approved=approved,
+            rejected=rejected
         )
 
-    # Employee view
+    # -------------------------
+    # MANAGER VIEW
+    # -------------------------
+    all_trips = Trip.query.all()
+
+    total = len(all_trips)
+    pending = len([t for t in all_trips if t.status == "pending"])
+    approved = len([t for t in all_trips if t.status == "approved"])
+    rejected = len([t for t in all_trips if t.status == "rejected"])
+
     return render_template(
-        "dashboard.html",
+        "dashboard_admin.html",
         user=user_id,
-        trips=trips
+        trips=all_trips,
+        total=total,
+        pending=pending,
+        approved=approved,
+        rejected=rejected
     )
 
 @app.route("/copilot", methods=["GET", "POST"])
