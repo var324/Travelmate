@@ -253,13 +253,45 @@ def dashboard():
         )
 
     # --------------------
-    # EMPLOYEE VIEW
+    # EMPLOYEE TRIPS
+    # --------------------
+    trips = Trip.query.filter_by(
+        employee_id=emp_id
+    ).all()
+
+    # --------------------
+    # COST SUMMARY
+    # --------------------
+    flight_total = 0
+    hotel_total = 0
+
+    if not flights.empty:
+        flight_total = flights[
+            "Air Charge"
+        ].sum()
+
+    if not hotels.empty:
+        hotel_total = hotels[
+            "TOTAL AMT BOOKED"
+        ].sum()
+
+    grand_total = (
+        flight_total +
+        hotel_total
+    )
+
+    # --------------------
+    # EMPLOYEE DASHBOARD
     # --------------------
     return render_template(
         "dashboard.html",
         user=user.name.split()[0],
+        trips=trips,
         flights=flights.to_dict("records"),
-        hotels=hotels.to_dict("records")
+        hotels=hotels.to_dict("records"),
+        flight_total=round(flight_total, 2),
+        hotel_total=round(hotel_total, 2),
+        grand_total=round(grand_total, 2)
     )
 
 @app.route("/copilot", methods=["GET", "POST"])
