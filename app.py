@@ -201,7 +201,7 @@ def dashboard():
 
         return render_template(
             "dashboard.html",
-            user=user_id,
+            user=user.name.split()[0],
             trips=trips,
             total=total,
             pending=pending,
