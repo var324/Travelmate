@@ -127,19 +127,3 @@ TravelMate uses role-based authentication:
 - Notifications are generated on status change
 - Users must activate account before login access
 
----
-
-## ⚙️ Installation & Setup
-
-```bash
-# Clone repository
-git clone <your-repo-url>
-
-# Move into project folder
-cd travelmate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run application
-python app.py
