@@ -1,16 +1,67 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>TravelMate Dashboard</title>
+    <title>Create Business Trip | TravelMate</title>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f9;
-            margin: 0;
+        * {
+            box-sizing: border-box;
         }
 
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fc;
+        }
+
+        /* NAVBAR */
         .navbar {
+            background: #1f3c88;
+            color: white;
+            padding: 20px 30px;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        /* CONTAINER */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px 0;
+        }
+
+        /* POLICY CARD */
+        .policy-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 8px solid #1f3c88;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .policy-card h2 {
+            margin-top: 0;
+            color: #1f3c88;
+        }
+
+        .policy-card ul {
+            line-height: 1.8;
+            padding-left: 20px;
+        }
+
+        /* MODULE CARD */
+        .module-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .module-header {
             background: #1f3c88;
             color: white;
             padding: 18px 25px;
@@ -18,85 +69,106 @@
             font-weight: bold;
         }
 
-        .container {
-            padding: 20px;
+        .module-body {
+            padding: 25px;
         }
 
-        .card {
-            background: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+        /* GRID */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
         }
 
-        .summary {
+        .form-group {
             display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
+            flex-direction: column;
         }
 
-        .summary-card {
-            flex: 1;
-            min-width: 220px;
-            background: #eef3ff;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
+        .full {
+            grid-column: span 2;
         }
 
-        .summary-card h2 {
-            color: #1f3c88;
-            margin-top: 10px;
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 10px 15px;
-            margin: 5px;
-            background: #1f3c88;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-        }
-
-        .btn:hover {
-            background: #2f54c6;
-        }
-
-        .status {
-            padding: 5px 10px;
-            border-radius: 5px;
-            color: white;
-            font-size: 12px;
-        }
-
-        .pending {
-            background: orange;
-        }
-
-        .approved {
-            background: green;
-        }
-
-        .rejected {
-            background: red;
-        }
-
-        .section-item {
-            padding-bottom: 15px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #e5e5e5;
-        }
-
-        iframe {
+        input,
+        select,
+        textarea {
+            padding: 12px;
             border: 1px solid #ddd;
             border-radius: 8px;
+            font-size: 15px;
         }
 
-        .small {
-            color: gray;
-            font-size: 12px;
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #1f3c88;
+            box-shadow: 0 0 5px rgba(31,60,136,0.25);
+        }
+
+        .notice {
+            background: #eef4ff;
+            border-left: 5px solid #1f3c88;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-card {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-card input {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .submit-btn {
+            background: #1f3c88;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #17306f;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #666;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 10px;
+            margin-right: 15px;
+        }
+
+        @media(max-width:900px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: span 1;
+            }
         }
     </style>
 </head>
@@ -104,227 +176,320 @@
 <body>
 
 <div class="navbar">
-    ✈️ TravelMate Employee Dashboard
+    ✈️ TravelMate – Create Business Trip
 </div>
 
 <div class="container">
 
-    <!-- WELCOME -->
-    <div class="card">
-        <h2>Welcome, {{ user }} 👋</h2>
-        <p>
-            Manage your business travel requests,
-            reservations, expenses, and travel policies.
-        </p>
+    <!-- POLICY SUMMARY -->
+    <div class="policy-card">
+
+        <h2>📘 Corporate Travel Policy Summary</h2>
+
+        <ul>
+            <li>All travel must be approved through TravelMate before booking.</li>
+            <li>Normal requests should be submitted at least 14 days in advance.</li>
+            <li>Accelerated requests require business justification.</li>
+            <li>Hotel accommodations are capped at $150–$200 per night.</li>
+            <li>Flights, transportation, meals, and reimbursements follow company policy.</li>
+            <li>Business travel insurance and international medical coverage are provided.</li>
+            <li>Expenses without receipts or sufficient travel information may not be reimbursed.</li>
+        </ul>
+
     </div>
 
-    <!-- QUICK ACTIONS -->
-    <div class="card">
-        <h3>Quick Actions</h3>
+    <form method="POST">
 
-        <a class="btn" href="/trip">
-            ➕ Create Trip
-        </a>
+        <!-- MODULE 1 -->
+        <div class="module-card">
 
-        <a class="btn" href="/notifications">
-            🔔 Notifications
-        </a>
-
-        <a class="btn" href="/logout">
-            🚪 Logout
-        </a>
-    </div>
-
-    <!-- COST SUMMARY -->
-    <div class="card">
-        <h3>💰 Estimated Travel Costs</h3>
-
-        <div class="summary">
-
-            <div class="summary-card">
-                <h4>✈️ Flights</h4>
-                <h2>${{ flight_total }}</h2>
+            <div class="module-header">
+                📋 Module 1 – Business Trip Information
             </div>
 
-            <div class="summary-card">
-                <h4>🏨 Hotels</h4>
-                <h2>${{ hotel_total }}</h2>
-            </div>
+            <div class="module-body">
 
-            <div class="summary-card">
-                <h4>Total Cost</h4>
-                <h2>${{ grand_total }}</h2>
+                <div class="notice">
+                    Complete your business trip information.
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Financing Method</label>
+                        <select name="financing" required>
+                            <option value="">Select</option>
+                            <option>Company Credit Card</option>
+                            <option>Personal Finance (Reimbursement)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Purpose of Travel</label>
+                        <select name="travel_purpose" required>
+                            <option value="">Select</option>
+                            <option>Company Visit</option>
+                            <option>Client Business Visit</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Request Type</label>
+                        <select name="request_type" required>
+                            <option value="">Select</option>
+                            <option>Normal Request</option>
+                            <option>Accelerated Request</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Expected Trip Duration (Days)</label>
+                        <input type="number" name="trip_days" min="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Country</label>
+                        <input type="text" name="country" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>State / Province</label>
+                        <input type="text" name="state">
+                    </div>
+
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" name="city" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Departure Date & Time</label>
+                        <input type="datetime-local"
+                               name="departure_datetime"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Return Date & Time</label>
+                        <input type="datetime-local"
+                               name="return_datetime"
+                               required>
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Business Justification (For Accelerated Requests)</label>
+                        <textarea
+                            name="justification"
+                            placeholder="Explain why this trip requires immediate approval..."></textarea>
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
-    </div>
 
-    <!-- UPCOMING TRIPS -->
-    <div class="card">
+        <!-- MODULE 2 -->
+        <div class="module-card">
 
-        <h3>📌 Upcoming Trips</h3>
+            <div class="module-header">
+                ✈️ Module 2 – Transportation & Flight Information
+            </div>
 
-        {% if trips %}
+            <div class="module-body">
 
-            {% for trip in trips %}
+                <div class="form-grid">
 
-            <div class="section-item">
+                    <div class="form-group">
+                        <label>Company Sponsored Airways?</label>
+                        <select name="company_air" required>
+                            <option value="">Select</option>
+                            <option>Yes</option>
+                            <option>No</option>
+                        </select>
+                    </div>
 
-                <b>{{ trip.origin }}</b>
-                →
-                <b>{{ trip.destination }}</b>
+                    <div class="form-group">
+                        <label>Estimated Flight Duration (Hours)</label>
+                        <input type="number"
+                               name="flight_hours"
+                               min="1">
+                    </div>
 
-                <br><br>
+                    <div class="form-group">
+                        <label>Using Personal Vehicle?</label>
+                        <select name="personal_vehicle">
+                            <option value="">Select</option>
+                            <option>Yes</option>
+                            <option>No</option>
+                        </select>
+                    </div>
 
-                {{ trip.start_date }}
-                to
-                {{ trip.end_date }}
+                    <div class="form-group">
+                        <label>Estimated Mileage</label>
+                        <input type="number"
+                               name="mileage"
+                               min="0">
+                    </div>
 
-                <br><br>
+                    <div class="form-group full">
+                        <label>Flight Details (If Self Booked)</label>
+                        <textarea
+                            name="flight_details"
+                            placeholder="Airline, Flight Number, Departure Airport, Arrival Airport, etc."></textarea>
+                    </div>
 
-                Purpose:
-                {{ trip.purpose }}
-
-                <br><br>
-
-                Status:
-                <span class="status {{ trip.status }}">
-                    {{ trip.status }}
-                </span>
+                </div>
 
             </div>
 
-            {% endfor %}
+        </div>
 
-        {% else %}
+        <!-- MODULE 3 -->
+        <div class="module-card">
 
-            <p>No trips found.</p>
+            <div class="module-header">
+                🏨 Module 3 – Lodging & Accommodation
+            </div>
 
-        {% endif %}
+            <div class="module-body">
 
-    </div>
+                <div class="form-grid">
 
-    <!-- UPCOMING FLIGHTS -->
-    <div class="card">
+                    <div class="form-group">
+                        <label>Company Sponsored Hotel?</label>
+                        <select name="company_hotel" required>
+                            <option value="">Select</option>
+                            <option>Yes</option>
+                            <option>No</option>
+                        </select>
+                    </div>
 
-        <h3>✈️ Upcoming Flights</h3>
+                    <div class="form-group">
+                        <label>Estimated Nightly Cost (USD)</label>
+                        <input type="number"
+                               name="nightly_cost"
+                               step="0.01">
+                    </div>
 
-        {% if flights %}
+                    <div class="form-group">
+                        <label>Check-In Date</label>
+                        <input type="date"
+                               name="checkin_date">
+                    </div>
 
-            {% for flight in flights %}
+                    <div class="form-group">
+                        <label>Check-Out Date</label>
+                        <input type="date"
+                               name="checkout_date">
+                    </div>
 
-            <div class="section-item">
+                    <div class="form-group full">
+                        <label>Hotel Information</label>
+                        <textarea
+                            name="hotel_details"
+                            placeholder="Hotel Name, Address, Phone Number, Emergency Contact Information"></textarea>
+                    </div>
 
-                <b>
-                    {{ flight["Route"] }}
-                </b>
-
-                <br><br>
-
-                Carrier:
-                {{ flight["Carrier"] }}
-
-                <br>
-
-                Cabin:
-                {{ flight["Cabin"] }}
-
-                <br>
-
-                Class:
-                {{ flight["Class"] }}
-
-                <br>
-
-                Trip Days:
-                {{ flight["tripdays"] }}
-
-                <br>
-
-                Estimated Cost:
-                ${{ flight["Air Charge"] }}
+                </div>
 
             </div>
 
-            {% endfor %}
+        </div>
 
-        {% else %}
+        <!-- MODULE 4 -->
+        <div class="module-card">
 
-            <p>No flight information available.</p>
+            <div class="module-header">
+                💰 Module 4 – Meals & Reimbursement
+            </div>
 
-        {% endif %}
+            <div class="module-body">
 
-    </div>
+                <div class="form-grid">
 
-    <!-- HOTEL RESERVATIONS -->
-    <div class="card">
+                    <div class="form-group">
+                        <label>Will you request reimbursement?</label>
+                        <select name="reimbursement" required>
+                            <option value="">Select</option>
+                            <option>Yes</option>
+                            <option>No</option>
+                        </select>
+                    </div>
 
-        <h3>🏨 Hotel Reservations</h3>
+                    <div class="form-group">
+                        <label>Client Entertainment Required?</label>
+                        <select name="client_meals">
+                            <option value="">Select</option>
+                            <option>Yes</option>
+                            <option>No</option>
+                        </select>
+                    </div>
 
-        {% if hotels %}
+                    <div class="form-group full">
+                        <label>Expense Notes</label>
+                        <textarea
+                            name="expense_notes"
+                            placeholder="Meals, groceries, transportation, special expenses, etc."></textarea>
+                    </div>
 
-            {% for hotel in hotels %}
-
-            <div class="section-item">
-
-                <b>
-                    {{ hotel["HOTEL NAME"] }}
-                </b>
-
-                <br><br>
-
-                {{ hotel["HOTEL CITY"] }},
-                {{ hotel["HOTEL COUNTRY"] }}
-
-                <br>
-
-                Room Type:
-                {{ hotel["ROOM TYPE"] }}
-
-                <br>
-
-                Number of Nights:
-                {{ hotel["# OF NIGHTS"] }}
-
-                <br>
-
-                Nightly Rate:
-                ${{ hotel["AVG NIGHTLY RATE"] }}
-
-                <br>
-
-                Total Reservation:
-                ${{ hotel["TOTAL AMT BOOKED"] }}
+                </div>
 
             </div>
 
-            {% endfor %}
+        </div>
 
-        {% else %}
+        <!-- MODULE 5 -->
+        <div class="module-card">
 
-            <p>No hotel reservations available.</p>
+            <div class="module-header">
+                🛡️ Module 5 – Insurance & Compliance
+            </div>
 
-        {% endif %}
+            <div class="module-body">
 
-    </div>
+                <div class="checkbox-card">
+                    <input type="checkbox"
+                           name="insurance_acknowledgement"
+                           required>
 
-    <!-- COMPANY TRAVEL POLICY -->
-    <div class="card">
+                    I understand that Business Travel Insurance and International
+                    Medical Coverage apply to approved company travel.
+                </div>
 
-        <h3>📄 Corporate Travel Policy</h3>
+                <div class="checkbox-card">
+                    <input type="checkbox"
+                           name="cyber_acknowledgement"
+                           required>
 
-        <p>
-            Review the company travel policy before booking
-            flights, accommodations, and submitting expenses.
-        </p>
+                    I agree to follow company cybersecurity requirements,
+                    including VPN usage and privacy protection.
+                </div>
 
-        <iframe
-            src="{{ url_for('static', filename='Travel_policy.pdf') }}"
-            width="100%"
-            height="700">
-        </iframe>
+                <div class="checkbox-card">
+                    <input type="checkbox"
+                           name="receipt_acknowledgement"
+                           required>
 
-    </div>
+                    I understand that expenses without receipts or sufficient
+                    travel information may not be reimbursed.
+                </div>
+
+                <br>
+
+                <a href="/dashboard" class="back-btn">
+                    ← Dashboard
+                </a>
+
+                <button class="submit-btn" type="submit">
+                    Submit Business Trip Request
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
 
 </div>
 
