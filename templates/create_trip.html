@@ -1,36 +1,266 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create Trip</title>
+    <title>Create Business Trip</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+        }
+
+        .navbar {
+            background: #1f3c88;
+            color: white;
+            padding: 18px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 85%;
+            margin: auto;
+            padding: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h2, h3 {
+            color: #1f3c88;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 120px;
+        }
+
+        .radio-group {
+            margin-top: 10px;
+        }
+
+        .radio-group input {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        .btn {
+            background: #1f3c88;
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .policy {
+            background: #eef3ff;
+            border-left: 5px solid #1f3c88;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
+
 <body>
 
-<h2>Create New Trip</h2>
+<div class="navbar">
+    ✈️ Create Business Trip
+</div>
 
-<form method="POST">
+<div class="container">
 
-    <label>Origin</label><br>
-    <input type="text" name="origin" required><br><br>
+    <div class="policy">
+        <b>Company Travel Policy Notice</b><br><br>
 
-    <label>Destination</label><br>
-    <input type="text" name="destination" required><br><br>
+        Company travel information is confidential and protected.
+        Access is restricted to employees using their Employee ID
+        and Password.
 
-    <label>Start Date</label><br>
-    <input type="date" name="start_date" required><br><br>
+        The company may provide support for:
+        • Flights
+        • Hotels
+        • Transportation
+        • Insurance
+        • Emergency assistance
+        • Reimbursements
+    </div>
 
-    <label>End Date</label><br>
-    <input type="date" name="end_date" required><br><br>
+    <form method="POST">
 
-    <label>Purpose</label><br>
-    <textarea name="purpose" required></textarea><br><br>
+        <!-- MODULE 1 -->
+        <div class="card">
+            <h2>Module 1: Business Trip Information</h2>
 
-    <button type="submit">Create Trip</button>
+            <label>Financing Method</label>
 
-</form>
+            <div class="radio-group">
+                <input type="radio"
+                       name="financing"
+                       value="Company Credit Card"
+                       required>
+                Company Credit Card
+                <br>
 
-<br>
+                <input type="radio"
+                       name="financing"
+                       value="Personal Finance">
+                Personal Finance (Reimbursement)
+            </div>
 
-<a href="/dashboard">← Back to Dashboard</a>
+            <label>Purpose of Travel</label>
+
+            <select name="purpose" required>
+                <option value="">Select</option>
+                <option>Company Visit</option>
+                <option>Client Business Visit</option>
+            </select>
+
+            <label>Expected Trip Duration (Days)</label>
+            <input type="number"
+                   name="days"
+                   min="1"
+                   required>
+
+            <label>Country</label>
+            <input type="text"
+                   name="country">
+
+            <label>State</label>
+            <input type="text"
+                   name="state">
+
+            <label>City</label>
+            <input type="text"
+                   name="city">
+
+            <label>Departure Date & Time</label>
+            <input type="datetime-local"
+                   name="departure"
+                   required>
+
+            <label>Return Date & Time</label>
+            <input type="datetime-local"
+                   name="return"
+                   required>
+        </div>
+
+        <!-- MODULE 2 -->
+        <div class="card">
+            <h2>Module 2: Air Travel Information</h2>
+
+            <label>Air Travel Type</label>
+
+            <div class="radio-group">
+                <input type="radio"
+                       name="flight_type"
+                       value="Company Sponsored"
+                       required>
+                Company Sponsored Airways
+                <br>
+
+                <input type="radio"
+                       name="flight_type"
+                       value="Personal">
+                Personal Choice Airways
+            </div>
+
+            <label>Flight Details (if personal booking)</label>
+            <textarea
+                name="flight_details"
+                placeholder="Airline, flight number, airports, dates, etc.">
+            </textarea>
+        </div>
+
+        <!-- MODULE 3 -->
+        <div class="card">
+            <h2>Module 3: Accommodation Information</h2>
+
+            <label>Hotel Preference</label>
+
+            <div class="radio-group">
+                <input type="radio"
+                       name="hotel_type"
+                       value="Company Sponsored"
+                       required>
+                Company Sponsored Hotel
+                <br>
+
+                <input type="radio"
+                       name="hotel_type"
+                       value="Personal">
+                Personal Choice Hotel
+            </div>
+
+            <label>Hotel Details (if personal booking)</label>
+            <textarea
+                name="hotel_details"
+                placeholder="Hotel name, address, phone number, emergency contact, check-in/check-out dates">
+            </textarea>
+        </div>
+
+        <!-- NOTES -->
+        <div class="card">
+            <h2>Additional Notes</h2>
+
+            <textarea
+                name="notes"
+                placeholder="Special requests or additional information">
+            </textarea>
+        </div>
+
+        <!-- DECLARATION -->
+        <div class="card">
+
+            <input type="checkbox"
+                   required
+                   style="width:auto;">
+
+            I have read and understood the Company Travel Policy.
+
+            <br><br>
+
+            <button class="btn"
+                    type="submit">
+                Submit Business Trip Request
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
 
 </body>
 </html>
+```
