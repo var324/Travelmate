@@ -192,22 +192,11 @@ def dashboard():
     # -------------------------
     if user.role != "manager":
 
-        trips = Trip.query.filter_by(employee_id=user_id).all()
-
-        total = len(trips)
-        pending = len([t for t in trips if t.status == "pending"])
-        approved = len([t for t in trips if t.status == "approved"])
-        rejected = len([t for t in trips if t.status == "rejected"])
+        
 
         return render_template(
             "dashboard.html",
-            user=user.name.split()[0],
-            trips=trips,
-            total=total,
-            pending=pending,
-            approved=approved,
-            rejected=rejected
-        )
+            user=user.name.split()[0])
 
     # -------------------------
     # MANAGER VIEW
