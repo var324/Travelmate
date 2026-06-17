@@ -196,44 +196,70 @@ def login():
 
 @app.route("/dashboard")
 def dashboard():
+
     if "user" not in session:
         return redirect("/login")
 
-    user_id = session["user"]
-    user = User.query.filter_by(employee_id=user_id).first()
+    emp_id = session["user"]
+
+    user = User.query.filter_by(
+        employee_id=emp_id
+    ).first()
 
     if not user:
+        session.pop("user", None)
         return redirect("/login")
 
-    # -------------------------
-    # EMPLOYEE VIEW
-    # -------------------------
-    if user.role != "manager":
+    # --------------------
+    # GET FLIGHT DATA
+    # --------------------
+    flights = air_df[
+        air_df["Employee ID"] == emp_id
+    ]
 
-        
+    # --------------------
+    # GET HOTEL DATA
+    # --------------------
+    hotels = hotel_df[
+        hotel_df["EMPLOYEE ID"] == emp_id
+    ]
+
+    # --------------------
+    # MANAGER VIEW
+    # --------------------
+    if user.role == "manager":
+
+        all_trips = Trip.query.all()
+
+        total = len(all_trips)
+        pending = len(
+            [t for t in all_trips if t.status == "pending"]
+        )
+        approved = len(
+            [t for t in all_trips if t.status == "approved"]
+        )
+        rejected = len(
+            [t for t in all_trips if t.status == "rejected"]
+        )
 
         return render_template(
-            "dashboard.html",
-            user=user.name.split()[0])
+            "dashboard_admin.html",
+            user=user.name.split()[0],
+            trips=all_trips,
+            total=total,
+            pending=pending,
+            approved=approved,
+            rejected=rejected
+        )
 
-    # -------------------------
-    # MANAGER VIEW
-    # -------------------------
-    all_trips = Trip.query.all()
-
-    total = len(all_trips)
-    pending = len([t for t in all_trips if t.status == "pending"])
-    approved = len([t for t in all_trips if t.status == "approved"])
-    rejected = len([t for t in all_trips if t.status == "rejected"])
-
+    # --------------------
+    # EMPLOYEE VIEW
+    # --------------------
     return render_template(
-        "dashboard_admin.html",
-        user=user_id,
-        trips=all_trips,
-        total=total,
-        pending=pending,
-        approved=approved,
-        rejected=rejected
+        "dashboard.html",
+        user=user.name.split()[0],
+        flights=flights.to_dict("records"),
+        hotels=hotels.to_dict("records")
     )
 
 @app.route("/copilot", methods=["GET", "POST"])
