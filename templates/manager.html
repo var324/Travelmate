@@ -1,0 +1,24 @@
+<h1>Manager Dashboard</h1>
+
+<p>Welcome, {{ user.name }}</p>
+
+<h2>Pending Trips</h2>
+<ul>
+  {% for trip in pending %}
+    <li>{{ trip.id }} - {{ trip.employee_id }}</li>
+  {% endfor %}
+</ul>
+
+<h2>Approved Trips</h2>
+<ul>
+  {% for trip in approved %}
+    <li>{{ trip.id }}</li>
+  {% endfor %}
+</ul>
+
+<h2>Rejected Trips</h2>
+<ul>
+  {% for trip in rejected %}
+    <li>{{ trip.id }}</li>
+  {% endfor %}
+</ul>
