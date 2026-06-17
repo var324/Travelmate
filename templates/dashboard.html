@@ -1,163 +1,338 @@
 <!DOCTYPE html>
+
 <html>
 <head>
-    <title>Dashboard</title>
+    <title>TravelMate Dashboard</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f9;
-            margin: 0;
-        }
+```
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f9;
+        margin: 0;
+    }
 
-        .navbar {
-            background: #1f3c88;
-            color: white;
-            padding: 15px 20px;
-            font-size: 18px;
-        }
+    .navbar {
+        background: #1f3c88;
+        color: white;
+        padding: 18px 25px;
+        font-size: 22px;
+        font-weight: bold;
+    }
 
-        .container {
-            padding: 20px;
-        }
+    .container {
+        padding: 20px;
+    }
 
-        .card {
-            background: white;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
+    .card {
+        background: white;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
 
-        .btn {
-            display: inline-block;
-            padding: 8px 12px;
-            margin: 5px 5px 5px 0;
-            background: #1f3c88;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 13px;
-        }
+    .btn {
+        display: inline-block;
+        padding: 10px 15px;
+        margin: 5px;
+        background: #1f3c88;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
 
-        .btn:hover {
-            opacity: 0.9;
-        }
+    .btn:hover {
+        background: #2d4fa8;
+    }
 
-        .status {
-            padding: 4px 8px;
-            border-radius: 4px;
-            color: white;
-            font-size: 12px;
-        }
+    .status {
+        padding: 5px 10px;
+        border-radius: 5px;
+        color: white;
+    }
 
-        .pending { background: orange; }
-        .approved { background: green; }
-        .rejected { background: red; }
+    .pending {
+        background: orange;
+    }
 
-        .small {
-            font-size: 12px;
-            color: gray;
-        }
-    </style>
+    .approved {
+        background: green;
+    }
+
+    .rejected {
+        background: red;
+    }
+
+    .summary {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .summary-card {
+        flex: 1;
+        min-width: 200px;
+        background: #eef3ff;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .summary-card h2 {
+        margin: 10px 0;
+        color: #1f3c88;
+    }
+
+    .small {
+        color: gray;
+        font-size: 12px;
+    }
+
+    iframe {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+</style>
+```
+
 </head>
 
 <body>
 
 <div class="navbar">
-    ✈️ Corporate Travel Copilot Dashboard
+    ✈️ TravelMate Employee Dashboard
 </div>
 
 <div class="container">
 
-    <!-- WELCOME -->
-    <div class="card">
-        <h2>Welcome, {{ user }} 👋</h2>
-        <p>Manage your corporate travel requests efficiently.</p>
-    </div>
-
-    <!-- QUICK ACTIONS -->
-    <div class="card">
-        <h3>Quick Actions</h3>
-
-        <a class="btn" href="/trip">➕ Create Trip</a>
-        <a class="btn" href="/approvals">📋 Approvals</a>
-        <a class="btn" href="/notifications">🔔 Notifications</a>
-        <a class="btn" href="/logout">🚪 Logout</a>
-    </div>
-
-    <!-- UPCOMING TRIPS -->
-    <div class="card">
-        <h3>📌 Upcoming Trips</h3>
-
-        {% if trips %}
-            {% for trip in trips %}
-                <div style="margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
-
-                    <b>{{ trip.origin }}</b> → <b>{{ trip.destination }}</b><br>
-
-                    {{ trip.start_date }} to {{ trip.end_date }}<br>
-
-                    Purpose: {{ trip.purpose }}<br><br>
-
-                    Status:
-                    <b class="status {{ trip.status }}">{{ trip.status }}</b>
-
-                    <br><br>
-
-                    <!-- ACTIONS -->
-                    <b>Actions:</b><br>
-
-                    <a class="btn" href="/checkpoint/{{ trip.id }}/flight_departure">✈️ Departure</a>
-                    <a class="btn" href="/checkpoint/{{ trip.id }}/arrival">📍 Arrival</a>
-                    <a class="btn" href="/checkpoint/{{ trip.id }}/hotel_checkin">🏨 Hotel Check-in</a>
-
-                    <br><br>
-
-                    <!-- TIMELINE -->
-                    <b>Trip Timeline:</b>
-
-                    {% if trip.checkpoints is defined and trip.checkpoints %}
-                        <div style="margin-top: 10px;">
-                            {% for cp in trip.checkpoints %}
-                                <div style="margin: 5px 0;">
-
-                                    {% if cp.type == "flight_departure" %}
-                                        ✈️
-                                    {% elif cp.type == "arrival" %}
-                                        🛬
-                                    {% elif cp.type == "hotel_checkin" %}
-                                        🏨
-                                    {% endif %}
-
-                                    <b>{{ cp.type.replace('_', ' ') }}</b>
-                                    <span class="small">— {{ cp.timestamp }}</span>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <p class="small">No checkpoints yet.</p>
-                    {% endif %}
-
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>No trips found.</p>
-        {% endif %}
-    </div>
-
-<!-- TRAVEL POLICY -->
+```
+<!-- WELCOME -->
 <div class="card">
-    <h3>📄 Company Travel Policy</h3>
-
-    <iframe
-        src="{{ url_for('static', filename='Travel_policy.pdf') }}"
-        width="100%"
-        height="700px"
-        style="border: 1px solid #eee; border-radius: 8px;">
-    </iframe>
+    <h2>Welcome, {{ user }} 👋</h2>
+    <p>
+        Manage your business travel requests, reservations,
+        expenses, and travel documents.
+    </p>
 </div>
 
+<!-- QUICK ACTIONS -->
+<div class="card">
+    <h3>Quick Actions</h3>
+
+    <a class="btn" href="/trip">
+        ➕ Create Trip
+    </a>
+
+    <a class="btn" href="/notifications">
+        🔔 Notifications
+    </a>
+
+    <a class="btn" href="/logout">
+        🚪 Logout
+    </a>
+</div>
+
+<!-- COST SUMMARY -->
+<div class="summary">
+
+    <div class="summary-card">
+        <h3>✈️ Flight Cost</h3>
+        <h2>${{ flight_total }}</h2>
+    </div>
+
+    <div class="summary-card">
+        <h3>🏨 Hotel Cost</h3>
+        <h2>${{ hotel_total }}</h2>
+    </div>
+
+    <div class="summary-card">
+        <h3>💰 Total Cost</h3>
+        <h2>${{ grand_total }}</h2>
+    </div>
+
+</div>
+
+<!-- UPCOMING TRIPS -->
+<div class="card">
+
+    <h3>📌 Upcoming Trips</h3>
+
+    {% if trips %}
+
+        {% for trip in trips %}
+
+            <div style="margin-bottom:20px;
+                        border-bottom:1px solid #eee;
+                        padding-bottom:15px;">
+
+                <b>
+                    {{ trip.origin }}
+                </b>
+
+                →
+
+                <b>
+                    {{ trip.destination }}
+                </b>
+
+                <br><br>
+
+                {{ trip.start_date }}
+                to
+                {{ trip.end_date }}
+
+                <br><br>
+
+                Purpose:
+                {{ trip.purpose }}
+
+                <br><br>
+
+                Status:
+
+                <span
+                    class="status {{ trip.status }}">
+                    {{ trip.status }}
+                </span>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No trips found.</p>
+
+    {% endif %}
+
+</div>
+
+<!-- FLIGHT INFORMATION -->
+<div class="card">
+
+    <h3>✈️ Upcoming Flights</h3>
+
+    {% if flights %}
+
+        {% for flight in flights %}
+
+            <div style="margin-bottom:20px;
+                        border-bottom:1px solid #eee;
+                        padding-bottom:15px;">
+
+                <b>
+                    {{ flight["Route"] }}
+                </b>
+
+                <br><br>
+
+                Carrier:
+                {{ flight["Carrier"] }}
+
+                <br>
+
+                Cabin:
+                {{ flight["Cabin"] }}
+
+                <br>
+
+                Class:
+                {{ flight["Class"] }}
+
+                <br>
+
+                Trip Days:
+                {{ flight["tripdays"] }}
+
+                <br>
+
+                Estimated Cost:
+                ${{ flight["Air Charge"] }}
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No flight information available.</p>
+
+    {% endif %}
+
+</div>
+
+<!-- HOTEL INFORMATION -->
+<div class="card">
+
+    <h3>🏨 Hotel Reservations</h3>
+
+    {% if hotels %}
+
+        {% for hotel in hotels %}
+
+            <div style="margin-bottom:20px;
+                        border-bottom:1px solid #eee;
+                        padding-bottom:15px;">
+
+                <b>
+                    {{ hotel["HOTEL NAME"] }}
+                </b>
+
+                <br><br>
+
+                {{ hotel["HOTEL CITY"] }},
+                {{ hotel["HOTEL COUNTRY"] }}
+
+                <br>
+
+                Room:
+                {{ hotel["ROOM TYPE"] }}
+
+                <br>
+
+                Nights:
+                {{ hotel["# OF NIGHTS"] }}
+
+                <br>
+
+                Nightly Rate:
+                ${{ hotel["AVG NIGHTLY RATE"] }}
+
+                <br>
+
+                Total:
+                ${{ hotel["TOTAL AMT BOOKED"] }}
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No hotel reservations available.</p>
+
+    {% endif %}
+
+</div>
+
+<!-- COMPANY POLICY -->
+<div class="card">
+
+    <h3>📄 Corporate Travel Policy</h3>
+
+    <iframe
+        src="{{ url_for('static',
+        filename='Travel_policy.pdf') }}"
+        width="100%"
+        height="700">
+    </iframe>
+
+</div>
+```
+
+</div>
 
 </body>
 </html>
+
