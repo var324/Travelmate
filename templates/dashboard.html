@@ -146,58 +146,6 @@
         {% endif %}
     </div>
 
-    <!-- STATUS OVERVIEW -->
-    <div class="card">
-        <h3>📊 Status Overview</h3>
-
-        <p>🟠 Pending:
-            {{ trips|selectattr("status","equalto","pending")|list|length }}
-        </p>
-
-        <p>🟢 Approved:
-            {{ trips|selectattr("status","equalto","approved")|list|length }}
-        </p>
-
-        <p>🔴 Rejected:
-            {{ trips|selectattr("status","equalto","rejected")|list|length }}
-        </p>
-    </div>
-
-    <!-- RISK ALERTS -->
-    <div class="card">
-        <h3>🚨 Risk Alerts</h3>
-
-        {% for trip in trips %}
-            {% if trip.risks is defined and trip.risks %}
-                {% for risk in trip.risks %}
-
-                    <div style="background:#fff3f3; padding:10px; margin:8px 0; border-left:4px solid red;">
-
-                        <b>{{ risk.event_type.replace('_',' ') }}</b><br>
-                        {{ risk.message }}<br>
-
-                        <span class="small">
-                            <b>Suggestion:</b> {{ risk.suggestion }}
-                        </span>
-
-                    </div>
-
-                {% endfor %}
-            {% endif %}
-        {% endfor %}
-
-    </div>
-
-    <!-- SYSTEM STATUS -->
-    <div class="card">
-        <h3>System Status</h3>
-        <p>✔ Authentication System Active</p>
-        <p>✔ Trip Module Active</p>
-        <p>✔ Approval Workflow Active</p>
-        <p>✔ Tracking System Active</p>
-    </div>
-
-</div>
 
 </body>
 </html>
