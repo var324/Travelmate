@@ -1,9 +1,27 @@
-
+import pandas as pd
 from flask import Flask, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
 import os
+
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+air_df = pd.read_excel(
+    os.path.join(
+        BASE_DIR,
+        "data",
+        "airline_booking_data.xlsx"
+    )
+)
+
+hotel_df = pd.read_excel(
+    os.path.join(
+        BASE_DIR,
+        "data",
+        "hotel_data.xlsx"
+    )
+)
 
 app = Flask(__name__)
 
