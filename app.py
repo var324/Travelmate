@@ -440,13 +440,6 @@ def logout():
 with app.app_context():
     db.create_all()
 
-    for u in users:
-        print(
-            u.employee_id,
-            u.activated,
-            u.password
-        )
-
     employees = [
         ("EMP1001","John Smith","john.smith@company.com","employee"),
         ("EMP1002","Sarah Johnson","sarah.johnson@company.com","employee"),
@@ -478,4 +471,4 @@ with app.app_context():
     db.session.commit()
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
