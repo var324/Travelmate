@@ -188,12 +188,42 @@ def login():
 
         if check_password_hash(user.password, password):
             session["user"] = emp_id
-            return redirect("/dashboard")
+            session["role"] = user.role   # ✅ IMPORTANT FIX
+
+            if user.role == "manager":
+                return redirect("/manager")
+            else:
+                return redirect("/dashboard")
 
         return "Invalid credentials"
 
     return render_template("login.html")
 
+@app.route("/manager")
+def manager():
+    # 🔐 security check
+    if session.get("role") != "manager":
+        return redirect("/login")
+
+    emp_id = session.get("user")
+
+    user = User.query.filter_by(employee_id=emp_id).first()
+    if not user:
+        return redirect("/login")
+
+    # Example data (replace with your real queries)
+    pending = Trip.query.filter_by(status="pending").all()
+    approved = Trip.query.filter_by(status="approved").all()
+    rejected = Trip.query.filter_by(status="rejected").all()
+
+    return render_template(
+        "manager.html",
+        user=user,
+        pending=pending,
+        approved=approved,
+        rejected=rejected
+    )
+    
 @app.route("/dashboard")
 def dashboard():
 
