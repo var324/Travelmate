@@ -1,54 +1,160 @@
 <!DOCTYPE html>
+
 <html>
 <head>
-    <title>Login</title>
+    <title>Login | TravelMate</title>
 
-    <style>
-        .demo-note {
-            background: #eef4ff;
-            border-left: 5px solid #1f3c88;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 8px;
-            color: #333;
-        }
+```
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #f4f7fc;
+        color: #333;
+    }
 
-        .demo-note h3 {
-            margin-top: 0;
-            color: #1f3c88;
-        }
-    </style>
+    h2 {
+        color: #1f3c88;
+    }
+
+    .demo-note {
+        background: #eef4ff;
+        border-left: 5px solid #1f3c88;
+        padding: 20px;
+        margin-bottom: 30px;
+        border-radius: 8px;
+    }
+
+    .demo-note h3 {
+        margin-top: 0;
+        color: #1f3c88;
+    }
+
+    .demo-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+    }
+
+    .demo-table th,
+    .demo-table td {
+        border: 1px solid #d0d7e2;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .demo-table th {
+        background-color: #1f3c88;
+        color: white;
+    }
+
+    form {
+        margin-top: 20px;
+    }
+
+    input {
+        display: block;
+        width: 100%;
+        max-width: 350px;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
+
+    button {
+        background-color: #1f3c88;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #17306b;
+    }
+
+    a {
+        color: #1f3c88;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .note {
+        font-size: 14px;
+        color: #555;
+    }
+</style>
+```
+
 </head>
 <body>
 
-    <div class="demo-note">
+```
+<div class="demo-note">
     <h3>🚀 GitHub Demo Access</h3>
+
     <p>
-        Visiting from GitHub? You can explore TravelMate using the demo account.
+        TravelMate includes preloaded employee records for demonstration purposes.
+        To explore the application:
     </p>
-    <p><strong>Employee ID:</strong> EMP101</p>
+
     <p>
-        If EMP101 is not yet activated, click
-        <a href="/activate">Activate Account</a>
-        and activate the account before logging in.
+        <strong>Quick Start:</strong><br>
+        1. Choose an Employee ID from the list below.<br>
+        2. Click <a href="/activate">Activate Account</a>.<br>
+        3. Create a password for that employee account.<br>
+        4. Sign in and explore TravelMate.
+    </p>
+
+    <table class="demo-table">
+        <tr>
+            <th>Employee ID</th>
+            <th>Name</th>
+            <th>Role</th>
+        </tr>
+        <tr><td>EMP1001</td><td>John Smith</td><td>Employee</td></tr>
+        <tr><td>EMP1002</td><td>Sarah Johnson</td><td>Employee</td></tr>
+        <tr><td>EMP1003</td><td>Michael Brown</td><td>Employee</td></tr>
+        <tr><td>EMP1004</td><td>Emily Davis</td><td>Employee</td></tr>
+        <tr><td>EMP1005</td><td>David Wilson</td><td>Employee</td></tr>
+        <tr><td>EMP1006</td><td>Jessica Moore</td><td>Employee</td></tr>
+        <tr><td>EMP1007</td><td>Daniel Taylor</td><td>Employee</td></tr>
+        <tr><td>EMP1008</td><td>Olivia Martinez</td><td>Employee</td></tr>
+        <tr><td>EMP1009</td><td>James Anderson</td><td>Employee</td></tr>
+    </table>
+
+    <p class="note">
+        These accounts are provided solely for demonstration and testing purposes.
     </p>
 </div>
 
-    <h2>Login</h2>
+<h2>Login</h2>
 
-    <form method="POST">
-        <input name="employee_id" placeholder="Employee ID">
-        <input name="password" type="password" placeholder="Password">
-        <button type="submit">Login</button>
-    </form>
+<form method="POST">
+    <input type="text" name="employee_id" placeholder="Employee ID" required>
 
-    <hr>
+    <input type="password"
+           name="password"
+           placeholder="Password"
+           required>
 
-    <p>New employee?</p>
+    <button type="submit">Login</button>
+</form>
 
-    <a href="/activate">
-        Activate Account
-    </a>
+<hr>
+
+<p>New employee?</p>
+
+<a href="/activate">Activate Account</a>
+```
 
 </body>
 </html>
