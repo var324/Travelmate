@@ -2,23 +2,47 @@
 <html>
 <head>
     <title>Login</title>
+
+    <style>
+        .demo-note {
+            background: #eef4ff;
+            border-left: 5px solid #1f3c88;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            color: #333;
+        }
+
+        .demo-note h3 {
+            margin-top: 0;
+            color: #1f3c88;
+        }
+    </style>
 </head>
 <body>
+
+    <div class="demo-note">
+        <h3>🔔 Demo Access</h3>
+        <p>If you're visiting from GitHub, you can explore TravelMate using the demo account:</p>
+        <p><strong>Employee ID:</strong> EMP101</p>
+        <p><em>Demo account for testing purposes only.</em></p>
+    </div>
+
     <h2>Login</h2>
 
-<form method="POST">
-    <input name="employee_id" placeholder="Employee ID">
-    <input name="password" type="password" placeholder="Password">
-    <button type="submit">Login</button>
-</form>
+    <form method="POST">
+        <input name="employee_id" placeholder="Employee ID">
+        <input name="password" type="password" placeholder="Password">
+        <button type="submit">Login</button>
+    </form>
 
-<hr>
+    <hr>
 
-<p>New employee?</p>
+    <p>New employee?</p>
 
-<a href="/activate">
-    Activate Account
-</a>
+    <a href="/activate">
+        Activate Account
+    </a>
 
 </body>
 </html>
